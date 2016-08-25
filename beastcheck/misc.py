@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+#coding=utf-8
+
 class AscertainmentBias(object):
     """Mixin to test for Ascertainment Bias"""
     def test_ascertainment_character(self):

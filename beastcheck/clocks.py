@@ -1,4 +1,8 @@
+#!/usr/bin/env python3
+#coding=utf-8
+
 # Clock Models
+import re
 
 class StrictClock(object):
     """Mixin to test clock model"""
