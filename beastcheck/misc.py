@@ -17,6 +17,5 @@ class AscertainmentBias(object):
         
     def test_treeLikelihood_has_exclude_set_correctly(self):
         data = self.xml.find('.//distribution[@id="likelihood"]//data')
-        assert data.get('excludefrom') == '0'
         assert data.get('excludeto') == '1'  # not inclusive.
       

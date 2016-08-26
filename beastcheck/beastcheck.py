@@ -199,9 +199,6 @@ class BeastTest(object):
     # helper for testing calibrations
     def check_calibration(self, clade, members, log=True, monophyletic=True):
         
-        if log:  # check logging
-            self.is_in_tracelog(clade)
-        
         # check in prior
         prior = self.xml.find('./run/distribution/distribution/[@id="prior"]')
         try:
@@ -222,6 +219,46 @@ class BeastTest(object):
             else:
                 taxa.append(t.get('idref'))
         self.assertEqual(sorted(members), sorted(taxa))
+        
+        # check logging
+        if log:
+            try:
+                self.is_in_tracelog(clade)
+            except:
+                raise AssertionError("Unable to find %s in trace log file" % clade)
+    
+    def check_calibration_normal(self, clade, mean, sigma):
+        prior = self.xml.find('./run/distribution/distribution/[@id="prior"]')
+        try:
+            cal = self.get_matching_children(prior, clade)[0]
+        except IndexError:
+            raise IndexError("Unable to find %s in prior" % clade)
+        
+        o = cal.find('Normal')
+        if o is None:
+            raise ValueError("No Normal calibration on %s" % clade)
+        
+        assert float(self.get_matching_children(o, 'mean', key="name")[0].text) == float(mean), "mean is not %r" % mean
+        assert float(self.get_matching_children(o, 'sigma', key="name")[0].text) == float(sigma), "sigma is not %r" % sigma
+    
+    def check_calibration_lognormal(self, clade, M, S, offset, meanInRealSpace=True):
+        prior = self.xml.find('./run/distribution/distribution/[@id="prior"]')
+        try:
+            cal = self.get_matching_children(prior, clade)[0]
+        except IndexError:
+            raise IndexError("Unable to find %s in prior" % clade)
+        
+        o = cal.find('LogNormal')
+        if o is None:
+            raise ValueError("No LogNormal calibration on %s" % clade)
+        
+        mrs = 'true' if meanInRealSpace else 'false'
+        assert o.get('meanInRealSpace') == mrs, "meanInRealSpace is not %s" % mrs
+        
+        assert float(o.get('offset')) == float(offset), 'offset != %s' % offset
+        
+        assert float(self.get_matching_children(o, 'M', key="name")[0].text) == float(M), "M is not %r" % M
+        assert float(self.get_matching_children(o, 'S', key="name")[0].text) == float(S), "S is not %r" % S
     
     def test_xml(self):
         if not self.validate:

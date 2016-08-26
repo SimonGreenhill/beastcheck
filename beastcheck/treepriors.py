@@ -136,3 +136,56 @@ class BirthDeathSkylineSerialTreePrior(object):
         assert self.is_in_tracelog("rho\.t:.*")
         assert self.is_in_tracelog("becomeUninfectiousRate\.t:.*")
         assert self.is_in_tracelog("R0")
+        
+
+class SampledAncestorTreePrior(object):
+    
+    def test_SA_state_originFBD(self):
+        assert self.is_in_state("originFBD\.t:.*")
+
+    def test_SA_state_diversificationRateFBD(self):
+        assert self.is_in_state("diversificationRateFBD\.t:.*")
+
+    def test_SA_state_turnoverFBD(self):
+        assert self.is_in_state("turnoverFBD\.t:.*")
+
+    def test_SA_state_samplingProportionFBD(self):
+        assert self.is_in_state("samplingProportionFBD\.t:.*")
+
+    def test_SA_prior_FBD(self):
+        assert self.is_in_prior("FBD\.t:.*")
+
+    def test_SA_prior_diversificationRatePriorFBD(self):
+        assert self.is_in_prior("diversificationRatePriorFBD\.t:.*")
+
+    def test_SA_prior_originPriorFBD(self):
+        assert self.is_in_prior("originPriorFBD\.t:.*")
+
+    def test_SA_prior_samplingProportionPriorFBD(self):
+        assert self.is_in_prior("samplingProportionPriorFBD\.t:.*")
+
+    def test_SA_prior_turnoverPriorFBD(self):
+        assert self.is_in_prior("turnoverPriorFBD\.t:.*")
+    
+    def test_SA_operators(self):
+        assert self.is_in_operators("originScalerFBD\.t:.*")
+        assert self.is_in_operators("divRateScalerFBD\.t:.*")
+        assert self.is_in_operators("turnoverScalerFBD\.t:.*")
+        assert self.is_in_operators("samplingPScalerFBD\.t:.*")
+        assert self.is_in_operators("LeafToSAFBD\.t:.*")
+        assert self.is_in_operators("SAWilsonBaldingFBD\.t:.*")
+        assert self.is_in_operators("SAWideFBD\.t:.*")
+        assert self.is_in_operators("SANarrowFBD\.t:.*")
+        assert self.is_in_operators("SAUniformOperatorFBD\.t:.*")
+        assert self.is_in_operators("SATreeRootScalerFBD\.t:.*")
+        assert self.is_in_operators("SATreeScalerFBD\.t:.*")
+    
+    def test_SA_logging(self):
+        assert self.is_in_tracelog("FBD\.t:.*")
+        assert self.is_in_tracelog("originFBD\.t:.*")
+        assert self.is_in_tracelog("diversificationRateFBD\.t:.*")
+        assert self.is_in_tracelog("turnoverFBD\.t:.*")
+        assert self.is_in_tracelog("samplingProportionFBD\.t:.*")
+        assert self.is_in_tracelog("SACountFBD\.t:.*", key="id")
+        
+

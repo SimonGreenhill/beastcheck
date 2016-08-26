@@ -7,6 +7,8 @@ class ModelCTMC(object):
     def test_userdatatype(self):
         """Test CTMC userDataType"""
         udt = self.xml.find('./data/userDataType')
+        if udt is None:
+            return  # no dataType info
         assert udt.get('spec') == "beast.evolution.datatype.StandardData"
         assert udt.get('ambiguities') == ""
         assert int(udt.get('nrOfStates')) == 2
